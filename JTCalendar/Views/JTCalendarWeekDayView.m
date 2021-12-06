@@ -69,16 +69,27 @@
             days = [[dateFormatter veryShortStandaloneWeekdaySymbols] mutableCopy];
             break;
         case JTCalendarWeekDayFormatShort:
+        case JTCalendarWeekDayFormatShortCapitalized:
             days = [[dateFormatter shortStandaloneWeekdaySymbols] mutableCopy];
             break;
         case JTCalendarWeekDayFormatFull:
+        case JTCalendarWeekDayFormatFullCapitalized:
             days = [[dateFormatter standaloneWeekdaySymbols] mutableCopy];
             break;
     }
     
     for(NSInteger i = 0; i < days.count; ++i){
         NSString *day = days[i];
-        [days replaceObjectAtIndex:i withObject:[day uppercaseString]];
+        switch(_manager.settings.weekDayFormat) {
+            case JTCalendarWeekDayFormatShortCapitalized:
+            case JTCalendarWeekDayFormatFullCapitalized:
+                day = [day capitalizedString];
+                break;
+            default:
+                day = [day uppercaseString];
+        }
+        
+        [days replaceObjectAtIndex:i withObject:day];
     }
     
     // Redorder days for be conform to calendar
